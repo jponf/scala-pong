@@ -1,0 +1,6 @@
+# Ignore Eclipse files
+/bin
+.cache
+.project
+.classpath
+.settings/*
