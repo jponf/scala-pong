@@ -102,7 +102,7 @@ class GameScene(manager: SceneManager) extends Scene(manager) {
       this)
 
   /**
-   * Sets ball properties after a collision with top or bottom edges
+   * Sets ball properties after a collision
    */
   private def setBallAfterCollision(x: Float, y: Float, xvelocity: Float,
     yvelocity: Float) = {
