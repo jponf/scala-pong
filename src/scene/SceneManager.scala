@@ -37,14 +37,14 @@ class SceneManager(val width: Int, val height: Int) extends scala.swing.Panel {
   def popScene(): Scene = scenes.pop()
 
   /**
-   * Propagate a key press event to the scene at the top of the stack
+   * Update keyboardState
    */
   def handleKeyPressed(key: Key.Value): Unit = {
     keyboardState.updateKeyPressed(key)
   }
 
   /**
-   * Propagate a key press event to the scene at the top of the stack
+   * Update keyboardState 
    */
   def handleKeyReleased(key: Key.Value): Unit = {
     keyboardState.updateKeyReleased(key)

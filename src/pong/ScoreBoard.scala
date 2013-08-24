@@ -19,17 +19,17 @@ class ScoreBoard(var p1score: Int, var p2score: Int, font: Font,
   def this(font: Font, parent: Scene) = this(0, 0, font, parent)
   
   /**
-   * @return new ScoreBoard with one more point for player 1
+   * Increase player1 score
    */
   def increasePlayer1Score() = p1score += 1
   
   /**
-   * @return new ScoreBoard with one more point for player 2
+   * Increase player2 score
    */
   def increasePlayer2Score() = p2score += 1
   
   /**
-   * Draw implementation inherit from Drawable2D
+   * Draw players' score
    */
   def draw(g: java.awt.Graphics2D): Unit = {
     g.setColor(java.awt.Color.WHITE)    
@@ -48,7 +48,7 @@ class ScoreBoard(var p1score: Int, var p2score: Int, font: Font,
   } 
   
   /**
-   * Inherit from abstract class SceneComponent
+   * Does nothing
    */
   def update(timespan: Float): Unit = {}
   

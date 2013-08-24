@@ -10,7 +10,7 @@ import helpers.MathHelper
 object Racket {
   val WIDTH = 15
   val HEIGHT = 75
-  val VELOCITY = 5
+  val VELOCITY = 350
 }
 
 /**
@@ -20,25 +20,45 @@ class Racket(var x: Float, var y: Float, parent: Scene)
   extends SceneComponent(parent) {
 
   /**
+   * @return Racket top edge Y coordinate
+   */
+  def getTop() = y
+  
+  /**
+   * @return Racket Bottom edge Y coordinate
+   */
+  def getBottom() = y + Racket.HEIGHT
+  
+  /**
+   * @return Racket left edge X coordinate
+   */
+  def getLeft() = x 
+  
+  /**
+   * @return Racket right edge X coordinate
+   */
+  def getRight() = x + Racket.WIDTH 
+  
+  /**
    * Move this racket up
    */
-  def moveUp(): Unit = {
-    y = MathHelper.clamp(y - Racket.VELOCITY,
-      0,
+  def moveUp(timespan: Float): Unit = {
+    y = MathHelper.clamp(y - Racket.VELOCITY * timespan,
+      0f,
       parent.getHeight() - Racket.HEIGHT)
   }
 
   /**
    * Move this racket down
    */
-  def moveDown(): Unit = {
-    y = MathHelper.clamp(y + Racket.VELOCITY,
-      0,
+  def moveDown(timespan: Float): Unit = {
+    y = MathHelper.clamp(y + Racket.VELOCITY * timespan,
+      0f,
       parent.getHeight() - Racket.HEIGHT)
   }
 
   /**
-   * Racket is updated when user presses a key
+   * Does nothing
    */
   def update(timespan: Float): Unit = {}
 

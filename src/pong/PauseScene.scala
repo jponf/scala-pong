@@ -46,7 +46,7 @@ class PauseScene(manager: SceneManager) extends Scene(manager) {
   }
 
   /**
-   * Draw
+   * Draw pause message 
    */
   override def draw(g: java.awt.Graphics2D): Unit = {
     super.draw(g)

@@ -18,7 +18,7 @@ class KeyboardState {
   def updateKeyReleased(key: Key.Value): Unit = key_state.put(key, false)
   
   /**
-   * Set the internal old key state equals to the actual one
+   * Sets the internal old key state equals to the actual one
    */
   def updateOldState(): Unit = {
     old_key_state.clear()
@@ -26,31 +26,29 @@ class KeyboardState {
   }
   
   /**
-   * Returns true if the specified key is pressed
+   * @return True if the specified key is pressed, false otherwise
    */
   def isKeyDown(key: Key.Value): Boolean = {
     key_state.getOrElse(key, false)
   }
 
   /**
-   * Returns true if the specified key is up
+   * @return True if the specified key is up, false otherwise
    */
   def isKeyUp(key: Key.Value): Boolean = {
     !isKeyDown(key)
   }
   
   /**
-   * Returns true if the key wasn't pressed before a call to updateOldState 
+   * @return True if the key wasn't pressed before a call to updateOldState 
    * and is pressed after 
    */
   def isNewKeyPress(key: Key.Value): Boolean = {
-//    println("isKeyDown(" + key + "): " + isKeyDown(key))
-//    println("old_key_state: " + old_key_state.getOrElse(key, false))
     isKeyDown(key) && !old_key_state.getOrElse(key, false) 
   }
   
   /**
-   * Returns true if the key was pressed before a call to updateOldState and 
+   * @return true if the key was pressed before a call to updateOldState and 
    * isn't pressed after
    */
   def isNewKeyRelease(key: Key.Value): Boolean = {

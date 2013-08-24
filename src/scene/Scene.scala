@@ -17,18 +17,18 @@ abstract class Scene(val manager: SceneManager) {
 
   /**
    * Remove the specified component. If the component isn't part of the scene
-   * then nothing happens
+   * nothing happens
    */
   def removeComponent(c: SceneComponent): Unit =
     components = components.filter(x => x != c)
 
   /**
-   * Gets the scene width
+   * @return Scene width
    */
   def getWidth() = manager.width
 
   /**
-   * Gets the scene height
+   * @return Scene height
    */
   def getHeight() = manager.height
  

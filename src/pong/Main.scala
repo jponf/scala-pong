@@ -19,7 +19,7 @@ object Main extends scala.swing.SimpleSwingApplication {
     contents = scene_manager
 
     // Game loop
-    val gameTimeLoop = new scala.actors.Actor {
+    val gameLoop = new scala.actors.Actor {
 
       def act() {
         var st = System.nanoTime()
@@ -29,7 +29,7 @@ object Main extends scala.swing.SimpleSwingApplication {
         loop {
           val tspan = (et - st) / 1000000f // Time in milliseconds for sleep
 
-          scene_manager.update(tspan / 1000f)
+          scene_manager.update(tspan / 1000f) // Runs game logic
           repaint()
 
           Thread.sleep(math.max(0f, Pong.TIME_BETWEEN_FRAMES - tspan).toLong)
@@ -39,8 +39,9 @@ object Main extends scala.swing.SimpleSwingApplication {
         }
       }
     }
-    gameTimeLoop.start()
+    gameLoop.start()
 
+    // Set up some window properties
     title = "Pong"
     size = new scala.swing.Dimension(Pong.DEF_WIDTH, Pong.DEF_HEIGHT)
   }

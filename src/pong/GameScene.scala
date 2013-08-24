@@ -37,32 +37,27 @@ class GameScene(manager: SceneManager) extends Scene(manager) {
   override def update(timespan: Float): Unit = {
     super.update(timespan)
     
-    handleKeyPressed()
+    handleKeyPressed(timespan)
     
     // Ball collisions
-    if (collisionLeft) {
-      setUpNewBall()
-      scoreboard.increasePlayer2Score
-    } else if (collisionRight) {
-      setUpNewBall()
-      scoreboard.increasePlayer1Score
-    }
+    if (collisionLeft) playerScore(scoreboard.increasePlayer2Score)
+    else if (collisionRight) playerScore(scoreboard.increasePlayer1Score)
+    
     
     if (collisionTop) {
-      setBallAfterCollision(ball.x, 0, ball.xvelocity, -ball.yvelocity)
+      ball.setTop(0)
+      ball.invertYVelocity()
     } else if (collisionBotom) {
-      setBallAfterCollision(
-        ball.x, manager.height - Ball.SIZE, ball.xvelocity, -ball.yvelocity)
+      ball.setBottom(manager.height)
+      ball.invertYVelocity()
     }
     
     if (collisionLeftRacket) { 
-      setBallAfterCollision(
-          p1racket.x + Racket.WIDTH, ball.y, 
-          -ball.xvelocity, ball.yvelocity)
+      ball.setLeft(p1racket.getRight())
+      ball.invertXVelocity()
     } else if(collisionRightRacket) {
-      setBallAfterCollision(
-          p2racket.x - Ball.SIZE, ball.y, 
-          -ball.xvelocity, ball.yvelocity)
+      ball.setRight(p2racket.getLeft())
+      ball.invertXVelocity()
     }
 
   }
@@ -70,19 +65,32 @@ class GameScene(manager: SceneManager) extends Scene(manager) {
   /**
    * Handles user input
    */
-  def handleKeyPressed() = {
+  def handleKeyPressed(timespan: Float) = {
 
     if (manager.keyboardState.isNewKeyPress(Pong.PAUSE_GAME))
       manager.pushScene(new PauseScene(manager))
     if (manager.keyboardState.isNewKeyPress(Pong.QUIT_GAME))
       System.exit(0)
 
-    if (manager.keyboardState.isKeyDown(Pong.PLAYER1_UP)) p1racket.moveUp
-    if (manager.keyboardState.isKeyDown(Pong.PLAYER1_DOWN)) p1racket.moveDown
-    if (manager.keyboardState.isKeyDown(Pong.PLAYER2_UP)) p2racket.moveUp
-    if (manager.keyboardState.isKeyDown(Pong.PLAYER2_DOWN)) p2racket.moveDown
+    if (manager.keyboardState.isKeyDown(Pong.PLAYER1_UP)) 
+      p1racket.moveUp(timespan)
+    if (manager.keyboardState.isKeyDown(Pong.PLAYER1_DOWN))
+      p1racket.moveDown(timespan)
+      
+    if (manager.keyboardState.isKeyDown(Pong.PLAYER2_UP)) 
+      p2racket.moveUp(timespan)
+    if (manager.keyboardState.isKeyDown(Pong.PLAYER2_DOWN)) 
+      p2racket.moveDown(timespan)
   }
 
+  /**
+   * Increase score and sets up a new ball
+   */
+  def playerScore(score_increase_function: () => Unit): Unit = {
+    score_increase_function()
+    setUpNewBall()
+  }
+  
   /**
    * Sets up a new ball
    */
@@ -93,7 +101,7 @@ class GameScene(manager: SceneManager) extends Scene(manager) {
   }
 
   /**
-   * Get a new ball centered on the game window with random velocity
+   * @return New ball centered on the game window with random velocity
    */
   private def getNewBall(): Ball =
     new Ball(
@@ -101,22 +109,14 @@ class GameScene(manager: SceneManager) extends Scene(manager) {
       Ball.getRandomBallVelocity(), Ball.getRandomBallVelocity(),
       this)
 
-  /**
-   * Sets ball properties after a collision with top or bottom edges
-   */
-  private def setBallAfterCollision(x: Float, y: Float, xvelocity: Float,
-    yvelocity: Float) = {
-    ball.x = x
-    ball.y = y
-    ball.xvelocity = xvelocity
-    ball.yvelocity = yvelocity
-  }
-
   // Ball collision checking  
   private def collisionTop = ball.intersects(0, -1, manager.width, 1)
-  private def collisionBotom = ball.intersects(0, manager.height, manager.width, 1)
   private def collisionLeft = ball.intersects(-1, 0, 1, manager.height)
-  private def collisionRight = ball.intersects(manager.width, 0, 1, manager.height)
+  
+  private def collisionBotom = 
+    ball.intersects(0, manager.height, manager.width, 1)
+  private def collisionRight = 
+    ball.intersects(manager.width, 0, 1, manager.height)
   
   private def collisionLeftRacket =
     ball.intersects(p1racket.x, p1racket.y, Racket.WIDTH, Racket.HEIGHT)
