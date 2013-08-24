@@ -7,6 +7,7 @@
 #
 ###
 
+SHELL=bash
 COMPILER = scalac
 BIN_OUTPUT=./scala-pong.jar
 
